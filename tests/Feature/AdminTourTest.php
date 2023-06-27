@@ -7,7 +7,6 @@ use App\Models\Travel;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AdminTourTest extends TestCase
@@ -29,7 +28,7 @@ class AdminTourTest extends TestCase
         $user->roles()->attach(Role::query()->where('name', 'editor')->value('id'));
         $travel = Travel::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'. $travel->id . '/tours');
+        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'.$travel->id.'/tours');
 
         $response->assertStatus(403);
     }
@@ -42,12 +41,12 @@ class AdminTourTest extends TestCase
         $user->roles()->attach(Role::query()->where('name', 'admin')->value('id'));
         $travel = Travel::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'. $travel->id . '/tours', [
-            'name' => 'Test tour'
+        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'.$travel->id.'/tours', [
+            'name' => 'Test tour',
         ]);
         $response->assertStatus(422);
 
-        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'. $travel->id . '/tours', [
+        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'.$travel->id.'/tours', [
             'name' => 'Test tour',
             'starting_date' => now()->toDateString(),
             'ending_date' => now()->subDay()->toDateString(),
@@ -55,7 +54,7 @@ class AdminTourTest extends TestCase
         ]);
         $response->assertStatus(422);
 
-        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'. $travel->id . '/tours', [
+        $response = $this->actingAs($user)->postJson('/api/v1/admin/travels/'.$travel->id.'/tours', [
             'name' => 'Test tour',
             'starting_date' => now()->toDateString(),
             'ending_date' => now()->addDay()->toDateString(),
@@ -63,7 +62,7 @@ class AdminTourTest extends TestCase
         ]);
         $response->assertStatus(201);
 
-        $response = $this->get('/api/v1/travels/'. $travel->slug . '/tours');
+        $response = $this->get('/api/v1/travels/'.$travel->slug.'/tours');
         $response->assertJsonFragment(['name' => 'Test tour']);
     }
 }

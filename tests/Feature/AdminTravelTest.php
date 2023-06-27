@@ -7,7 +7,6 @@ use App\Models\Travel;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AdminTravelTest extends TestCase
@@ -39,7 +38,7 @@ class AdminTravelTest extends TestCase
         $user->roles()->attach(Role::query()->where('name', 'admin')->value('id'));
 
         $response = $this->actingAs($user)->postJson('/api/v1/admin/travels', [
-            'name' => 'Test travel'
+            'name' => 'Test travel',
         ]);
         $response->assertStatus(422);
 
@@ -63,13 +62,13 @@ class AdminTravelTest extends TestCase
         $user->roles()->attach(Role::where('name', 'editor')->value('id'));
         $travel = Travel::factory()->create();
 
-        $response = $this->actingAs($user)->putJson('/api/v1/admin/travels/' . $travel->id, [
-            'name' => $travel->name . ' - updated',
+        $response = $this->actingAs($user)->putJson('/api/v1/admin/travels/'.$travel->id, [
+            'name' => $travel->name.' - updated',
         ]);
         $response->assertUnprocessable();
 
-        $response = $this->actingAs($user)->putJson('/api/v1/admin/travels/' . $travel->id, [
-            'name' => $travel->name . ' - updated',
+        $response = $this->actingAs($user)->putJson('/api/v1/admin/travels/'.$travel->id, [
+            'name' => $travel->name.' - updated',
             'is_public' => true,
             'description' => 'Test travel description',
             'number_of_days' => 4,
@@ -77,6 +76,6 @@ class AdminTravelTest extends TestCase
         $response->assertOk();
 
         $response = $this->get('/api/v1/travels');
-        $response->assertJsonFragment(['name' => $travel->name . ' - updated']);
+        $response->assertJsonFragment(['name' => $travel->name.' - updated']);
     }
 }

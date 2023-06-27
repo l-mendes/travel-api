@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class CreateUserCommandTest extends TestCase

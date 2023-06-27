@@ -16,7 +16,7 @@ class Tour extends Model
         'name',
         'starting_date',
         'ending_date',
-        'price'
+        'price',
     ];
 
     public function price(): Attribute
