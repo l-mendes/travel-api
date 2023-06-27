@@ -23,7 +23,7 @@ class TravelRequest extends FormRequest
     {
         return [
             'is_public' => ['boolean'],
-            'name' => ['required', 'unique:travels'],
+            'name' => $this->isMethod('PUT') ? ['required', 'unique:travels,name,' . $this->travel?->id] : ['required', 'unique:travels'],
             'description' => ['required'],
             'number_of_days' => ['required', 'integer'],
         ];
